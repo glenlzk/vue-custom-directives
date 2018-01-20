@@ -5,9 +5,10 @@
 
 ;(function (Vue) {
 
-
+    // 1.定义一个组件对象
     var dragBar = {};
 
+    // 1.常用工具函数
     var getRect = function(element) { //返回元素相对于浏览器的偏移位置
         var rect = element.getBoundingClientRect();
         if (typeof rect.width == 'undefined') { // rect.width,    //IE中无法获取
@@ -66,11 +67,12 @@
         return Number(num) < 10? '0' + num : num;
     };
 
-    // 全局变量，通过window.dragBar暴露出去
+    // 2.全局变量，通过window.dragBar暴露出去
     dragBar.config = {
 
     };
 
+    // 3.dragBar.install= 固定写法，用于组成组件
     dragBar.install = function (Vue) {
 
         Vue.directive('drag', {
@@ -175,6 +177,7 @@
         });
     };
 
+    // 4.根据不同的环境，选择暴露、注册方法
     if (typeof exports == "object") {
         module.exports = dragBar;
     } else if (typeof define == "function" && define.amd) {
