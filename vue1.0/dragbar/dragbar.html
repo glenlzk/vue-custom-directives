@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="src/dragbar.css">
+    <style>
+
+        /*---------------------------*/
+        .mt100 {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!--  拖拽Test start -->
+    <div class="mt100">
+        <button @click="isShow = !isShow">开关</button>
+        <div class="user-no-select">cur: {{cur}}</div>
+        <div class="user-no-select">cur2: {{cur2}}</div>
+        <div class="user-no-select">cur3: {{cur3}}</div>
+        <template  v-if="isShow">
+            <div class="dp-range-content" >
+                <div class="dp-range-runway" v-drag="cur" data-max="25" data-step="0" :cur="cur" data-move="1">
+                    <span class="dp-rang-progress"></span>
+                    <span class="dp-rang-ban"></span>
+                    <span class="dp-range-thumb"></span>
+                </div>
+            </div>
+            <div class="dp-range-content" >
+                <div class="dp-range-runway" v-drag="cur2" data-max="59" data-step="2" :cur="cur2" data-move="1">
+                    <span class="dp-rang-progress"></span>
+                    <span class="dp-rang-ban"></span>
+                    <span class="dp-range-thumb"></span>
+                </div>
+            </div>
+            <div class="dp-range-content" >
+                <div class="dp-range-runway" v-drag="cur3" data-max="89" data-step="2" :cur="cur3" data-move="0">
+                    <span class="dp-rang-progress"></span>
+                    <span class="dp-rang-ban"></span>
+                    <span class="dp-range-thumb"></span>
+                </div>
+            </div>
+        </template>
+    </div>
+    <!--  拖拽Test end -->
+</body>
+</html>
+<script type="text/javascript" src="src/vue.min.js"></script>
+<script type="text/javascript" src="src/dragbar.js"></script>
+<script type="text/javascript">
+
+    new Vue({
+        el: 'body',
+        data: {
+            cur: 10,
+            cur2: 20,
+            cur3: 44,
+            isShow: false,
+        },
+        methods:{
+        }
+    });
+
+</script>
