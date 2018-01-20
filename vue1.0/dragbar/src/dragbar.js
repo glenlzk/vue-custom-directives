@@ -111,7 +111,7 @@
 
 
                     _self.dragObj.max = runway_data.max;
-                    _self.dragObj.left = Math.floor((_self.dragObj.cur/_self.dragObj.max)*_self.dragObj.runway_w - _self.dragObj.thumb_w);
+                    _self.dragObj.left = Math.floor((_self.dragObj.cur/_self.dragObj.max)*(_self.dragObj.runway_w - _self.dragObj.thumb_w));
                     thumb_el.style.left = progress_el.style.width = (_self.dragObj.left <=0 ? 0 : _self.dragObj.left) + 'px';
 
                     ('0' == runway_data.move) && (ban_el.style.width = progress_el.style.width);
@@ -149,7 +149,7 @@
                         that.style.left = progress_el.style.width = limitLeft+'px';
 
                         // 同步传入参数(双向数据绑定)
-                        _self.set(addZero(Math.floor((limitLeft/maxLeft)*_self.dragObj.max)));
+                        _self.set(addZero(Math.ceil((limitLeft/maxLeft)*_self.dragObj.max)));
 
                     };
                 };
@@ -177,7 +177,7 @@
         });
     };
 
-    // 4.根据不同的环境，选择暴露、注册方法
+    // 4.根据不同的环境，选择不同的暴露/注册方法
     if (typeof exports == "object") {
         module.exports = dragBar;
     } else if (typeof define == "function" && define.amd) {
