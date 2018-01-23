@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="src/vue.datepicker.css">
+
+</head>
+<body>
+    <div>StartTime:{{startTime}}</div>
+    <div>EndTime:{{endTime}}</div>
+    <div>Time:{{item.startTime}}</div>
+    <div>Time:{{item.endTime}}</div>
+    <!--<mz-datepicker en></mz-datepicker>
+    <mz-datepicker format="yyyy-MM-dd" :start-time.sync="item.startTime" :end-time.sync="item.endTime" range en confirm :on-confirm="confrim"></mz-datepicker>-->
+
+    <div>实例1</div>
+    <hr />
+    <br/>
+    <mz-datepicker format="yyyy-MM-dd" clearable :time.sync="time" :width="width"></mz-datepicker>
+    <mz-datepicker format="yyyy-MM-dd" clearable :time.sync="time" :width="width"  :tips="'入住'"></mz-datepicker>
+
+    <br/>
+    <br/>
+    <div>实例2</div>
+    <hr />
+    <br/>
+    <mz-datepicker format="yyyy-MM-dd" :time.sync="time" :width="width" :tips="'入住'" limitpredate></mz-datepicker>
+    <hr />
+    <br/>
+
+    <mz-datepicker format="yyyy-MM-dd hh-mm" :item-outelem.sync="item" :time.sync="item.time" :end-date.sync="item.endDate" :outhhmm.sync="item.checkoutTime" :hhmm.sync="item.checkinTime" :on-confirm="checkInDateFun"  :width="width" :tips="'入住'" limitpredate></mz-datepicker>
+    -
+    <mz-datepicker format="yyyy-MM-dd hh-mm" :item-outelem.sync="item" :time.sync="item.time" :end-date.sync="item.endDate" :inhhmm.sync="item.checkinTime" :hhmm.sync="item.checkoutTime" :on-confirm="checkOutDateFun" twosingle :width="width" :tips="'离店'" limitpredate></mz-datepicker>
+    <hr />
+    <br/>
+
+    <mz-datepicker format="yyyy-MM-dd hh-mm" :item-outelem.sync="item" :time.sync="item.time" :end-date.sync="item.endDate" :outhhmm.sync="item.checkoutTime" :hhmm.sync="item.checkinTime" :on-confirm="checkInDateFun" :width="120"  limitpredate ></mz-datepicker>
+    -
+    <mz-datepicker format="yyyy-MM-dd hh-mm" :item-outelem.sync="item" :time.sync="item.time" :end-date.sync="item.endDate" :inhhmm.sync="item.checkinTime" :hhmm.sync="item.checkoutTime" :on-confirm="checkOutDateFun" twosingle :width="120" limitpredate></mz-datepicker>
+
+    <br/>
+    <br/>
+    <div>实例3</div>
+    <hr />
+    <br/>
+    <mz-datepicker format="yyyy-MM-dd" :start-time.sync="getBusinessStatisticsData.fromDate" :end-time.sync="getBusinessStatisticsData.toDate" range en confirm :on-confirm="businessStatisticDate"></mz-datepicker>
+    <hr />
+    <br/>
+
+
+    <!--<mz-datepicker disabled></mz-datepicker>-->
+    <script type="text/javascript" src="src/jquery.js"></script>
+    <script type="text/javascript" src="src/vue.min.js"></script>
+
+  	<script type="text/javascript" src="src/vue.datepicker.js"></script>
+    <script type="text/javascript" src="src/range.js"></script>
+    <script type="text/javascript">
+        $(function () {
+        	new Vue({
+	            el: 'body',
+	            data: {
+	            	width: 150,
+                    time: '2018-01-18',
+                    checkinTime: '17:00',
+                    endDate: '2018-01-19',
+                    checkoutTime: '17:30',
+	                /*item: {
+	                		startTime: new Date('2016-03-31').getTime(),
+		                	endTime: new Date('2016-03-31').getTime()
+	                },*/
+	                // 营业统收----获取数据
+					getBusinessStatisticsData: {
+						fromDate: '2017-09-08',
+						toDate: '2017-10-09'
+					},
+                    // ----------------
+                    hhmm: '18:50',
+                    isShow: false,
+                    // ----------------
+                    item: {
+                        time: '2018-01-18',
+                        checkinTime: '17:00',
+                        endDate: '2018-01-19',
+                        checkoutTime: '17:30',
+                    },
+	            },
+
+	            methods:{
+	                confrim:function(startTime,endTime){
+	                    console.log(startTime);
+	                    console.log(endTime);
+	                },
+	                businessStatisticDate: function () {
+	                	
+	                },
+                    checkInDateFun: function () {
+                        console.log('checkInDateFun.......');
+                    },
+                    checkOutDateFun: function () {
+                        console.log('checkOutDateFun.......');
+                    },
+	            }
+	        });
+        	
+        });
+
+    </script>
+    
+</body>
+</html>
+<!--<script>
+
+    /*Vue.directive('drop-down',function(data) {
+     var elem = this.el;
+     var bln = elem.dataset.bln
+
+     elem.onclick = function (event) {
+     var event = event || window.event;
+
+     console.log();
+     };
+
+     yzl.addHandler(document.body, 'click', function () {
+     if (data) {
+     data[bln] = false;
+     };
+     });
+     });*/
+
+    /*
+     双向指令
+
+     value = obj = {height: 500};
+     set:   value.height = 800
+
+     value = height = 200;
+     set:   this.set(500);
+     height = 500
+
+
+     Vue.directive('dom', {
+     bind: function (el, binding) {
+     var obj = binding.value;
+     if (obj != null) {
+     var key = Object.keys(binding.modifiers)[0] || "el";
+     Vue.set(obj, key, el);
+     }
+     }
+     });
+
+     https://www.jianshu.com/p/558c54c614a1
+     */
+
+
+    ;(function (Vue) {
+
+        var dragBar = {};
+
+        dragBar.getRect = function(element) { //返回元素相对于浏览器的偏移位置
+            var rect = element.getBoundingClientRect();
+            if (typeof rect.width == 'undefined') { // rect.width,    //IE中无法获取
+                return {
+                    width: rect.right - rect.left,
+                    height: rect.bottom - rect.top,
+                    top: rect.top,						//元素本身无需绝对定位等
+                    bottom: rect.bottom,
+                    left: rect.left,
+                    right: rect.right
+                };
+            }
+            return rect;
+        };
+
+        /*
+         *   dom 的 dragBar.contains方法
+         *   https://www.cnblogs.com/litao229/archive/2012/06/20/2555968.html
+         *   https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
+         * */
+
+        dragBar.contains  = function(root , el) {
+            if (root.compareDocumentPosition)
+                return root === el || !!(root.compareDocumentPosition(el) & 16);
+            if (root.contains && el.nodeType === 1){
+                return root.contains(el) && root !== el;
+            }
+            while ((el = el.parentNode))
+                if (el === root) return true;
+            return false;
+        };
+
+        /*
+         *  判断DOM元素是否已经插入document中
+         * */
+        dragBar.insertedDom = function (arr, callback) {
+            var num = 0;
+
+            for (var i=0; i<arr.length; i++) {
+                var elem = arr[i];
+                if (elem.timer) clearInterval(elem.timer);
+                setTimeout(function () {
+                    elem.timer = setInterval(function () {
+                        if (dragBar.contains(document.body, elem)) {
+                            num ++;
+                            clearInterval(elem.timer);
+                            if (num == arr.length) {
+                                callback && callback();
+                            };
+                        };
+                    }, 50)
+                }, 300)
+            };
+        };
+
+        dragBar.addZero = function (num) {
+            return Number(num) < 10? '0' + num : num;
+        };
+
+        dragBar.runway_w = 0;
+        dragBar.runway_l = 0;
+        dragBar.thumb_w = 0;
+        dragBar.cur = 0;
+        dragBar.r_max = 0;
+        dragBar.t_max = 0;
+
+        dragBar.bindFun = function () {
+
+            var _self = this;
+
+            var runway_el = _self.el;
+
+            var runway_data = runway_el.dataset;
+
+            var thumb_el = runway_el.getElementsByClassName('dp-range-thumb')[0];
+
+            var _Time = _self.params.hhmm.split(":");
+
+
+            dragBar.insertedDom([thumb_el, runway_el], function () {
+
+                dragBar.runway_w = dragBar.getRect(runway_el).width;
+                dragBar.runway_l = dragBar.getRect(runway_el).left;
+                dragBar.thumb_w = dragBar.getRect(thumb_el).width;
+
+                if (runway_data.type == 'hh') {
+                    dragBar.r_max = 23;
+                    dragBar.cur = Number(_Time[0]);
+                    // 拖拽 &#45;&#45;&#45;&#45; 初始化位置
+                    var _left = Math.floor((dragBar.cur/dragBar.r_max)*dragBar.runway_w - dragBar.thumb_w);
+                    thumb_el.style.left =(_left <=0 ? 0 : _left) + 'px';
+                } else {
+                    dragBar.t_max = 59;
+                    dragBar.cur = Number(_Time[1]);
+                    var _left = Math.floor((dragBar.cur/dragBar.t_max)*dragBar.runway_w - dragBar.thumb_w);
+                    thumb_el.style.left = (_left <=0 ? 0 : _left) + 'px';
+                };
+
+
+                thumb_el.onmousedown = function (event) {
+                    var e = event || window.event;
+                    var that = this;
+
+                    thumb_el.style.transitionProperty = "none";
+
+                    var thumb_l = dragBar.getRect(thumb_el).left;
+                    var thumb_clientx = e.clientX;
+                    var innerLeft= thumb_clientx - thumb_l;
+
+                    /*鼠标移动，span位移*/
+                    document.onmousemove=function(event) {
+                        var e = event || window.event;
+
+                        var limitLeft=e.clientX - dragBar.runway_l - innerLeft;
+                        var maxLeft = dragBar.runway_w - dragBar.thumb_w;
+
+
+                        if(limitLeft<=0) {
+                            limitLeft=0;
+                        }else if(limitLeft>=maxLeft){
+                            limitLeft=maxLeft;
+                        };
+
+                        that.style.left = limitLeft+'px';
+
+
+                        if (runway_data.type == 'hh') {
+                            _self.set(dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.r_max)) + ':' + _Time[1]);
+                        } else {
+                            _self.set(_Time[0] + ':' + dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.t_max)));
+                        };
+                    };
+                };
+
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                };
+            });
+        };
+
+        dragBar.updateFun = function (value) {
+
+
+        };
+
+        Vue.directive('drag', {
+            twoWay: true,
+            params: ['hhmm'],
+            bind: dragBar.bindFun,
+            // 移除对应DOM，会触发（v-if="true"）
+            update: dragBar.updateFun,
+            // 移除对应DOM，会触发（v-if="false"）
+            unbind: function () {
+
+            }
+        });
+    })(Vue);
+
+</script>-->
+
+<!--<script>
+
+    /*Vue.directive('drop-down',function(data) {
+     var elem = this.el;
+     var bln = elem.dataset.bln
+
+     elem.onclick = function (event) {
+     var event = event || window.event;
+
+     console.log();
+     };
+
+     yzl.addHandler(document.body, 'click', function () {
+     if (data) {
+     data[bln] = false;
+     };
+     });
+     });*/
+
+    /*
+     双向指令
+
+     value = obj = {height: 500};
+     set:   value.height = 800
+
+     value = height = 200;
+     set:   this.set(500);
+     height = 500
+
+
+     Vue.directive('dom', {
+     bind: function (el, binding) {
+     var obj = binding.value;
+     if (obj != null) {
+     var key = Object.keys(binding.modifiers)[0] || "el";
+     Vue.set(obj, key, el);
+     }
+     }
+     });
+
+     https://www.jianshu.com/p/558c54c614a1
+     */
+
+
+    ;(function (Vue) {
+
+        var dragBar = {};
+
+        dragBar.getRect = function(element) { //返回元素相对于浏览器的偏移位置
+            var rect = element.getBoundingClientRect();
+            if (typeof rect.width == 'undefined') { // rect.width,    //IE中无法获取
+                return {
+                    width: rect.right - rect.left,
+                    height: rect.bottom - rect.top,
+                    top: rect.top,						//元素本身无需绝对定位等
+                    bottom: rect.bottom,
+                    left: rect.left,
+                    right: rect.right
+                };
+            }
+            return rect;
+        };
+
+        /*
+         *   dom 的 dragBar.contains方法
+         *   https://www.cnblogs.com/litao229/archive/2012/06/20/2555968.html
+         *   https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
+         * */
+
+        dragBar.contains  = function(root , el) {
+            if (root.compareDocumentPosition)
+                return root === el || !!(root.compareDocumentPosition(el) & 16);
+            if (root.contains && el.nodeType === 1){
+                return root.contains(el) && root !== el;
+            }
+            while ((el = el.parentNode))
+                if (el === root) return true;
+            return false;
+        };
+
+        /*
+         *  判断DOM元素是否已经插入document中
+         * */
+        dragBar.insertedDom = function (arr, callback) {
+            var num = 0;
+
+            for (var i=0; i<arr.length; i++) {
+                var elem = arr[i];
+
+                if (elem.timer) {
+                    console.log('-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;clear&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;');
+                    clearInterval(elem.timer)
+                };
+                // if (dragBar.contains(document.body, elem)) return;
+                // setTimeout(function () {
+                    elem.timer = setInterval(function () {
+                        if (dragBar.contains(document.body, elem)) {
+                            num ++;
+                            clearInterval(elem.timer);
+                            if (num == arr.length) {
+                                console.log('-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;callback&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;');
+                                callback && callback();
+                            };
+                        };
+                    }, 300)
+                // }, 300)
+            };
+        };
+
+        dragBar.addZero = function (num) {
+            return Number(num) < 10? '0' + num : num;
+        };
+
+        dragBar.runway_w = 0;
+        dragBar.runway_l = 0;
+        dragBar.thumb_w = 0;
+        dragBar.cur = 0;
+        dragBar.t_time_0 = 0;
+        dragBar.r_time_2 = 0;
+        dragBar.r_max = 0;
+        dragBar.t_max = 0;
+
+        dragBar._num  = false;
+
+        dragBar.bindFun = function () {
+
+
+        };
+
+        dragBar.updateFun = function (value) {
+
+            var _self = this;
+
+            var runway_el = _self.el;
+
+            var runway_data = runway_el.dataset;
+
+            var thumb_el = runway_el.getElementsByClassName('dp-range-thumb')[0];
+
+            var _Time = value.split(":");
+
+
+            console.log('event&#45;&#45;out：', _Time);
+
+            if (!dragBar._num) {
+                dragBar.insertedDom([thumb_el, runway_el], function () {
+                    dragBar._num = true;
+
+                    dragBar.runway_w = dragBar.getRect(runway_el).width;
+                    dragBar.runway_l = dragBar.getRect(runway_el).left;
+                    dragBar.thumb_w = dragBar.getRect(thumb_el).width;
+
+                    if (runway_data.type == 'hh') {
+                        dragBar.r_max = 23;
+                        dragBar.r_time_2 = Number(_Time[1]);
+                        dragBar.cur = Number(_Time[0]);
+                        // 拖拽 &#45;&#45;&#45;&#45; 初始化位置
+                        var _left = Math.floor((dragBar.cur/dragBar.r_max)*dragBar.runway_w - dragBar.thumb_w);
+                        thumb_el.style.left =(_left <=0 ? 0 : _left) + 'px';
+                    } else {
+                        dragBar.t_max = 59;
+                        dragBar.t_time_0 = Number(_Time[0]);
+                        dragBar.cur = Number(_Time[1]);
+                        var _left = Math.floor((dragBar.cur/dragBar.t_max)*dragBar.runway_w - dragBar.thumb_w);
+                        thumb_el.style.left = (_left <=0 ? 0 : _left) + 'px';
+                    };
+
+
+                    thumb_el.onmousedown = function (event) {
+                        var e = event || window.event;
+                        var that = this;
+
+
+                        console.log('mousedown：', _Time);
+
+                        thumb_el.style.transitionProperty = "none";
+
+                        var thumb_l = dragBar.getRect(thumb_el).left;
+                        var thumb_clientx = e.clientX;
+                        var innerLeft= thumb_clientx - thumb_l;
+
+
+                        /*鼠标移动，span位移*/
+                        document.onmousemove=function(event) {
+                            var e = event || window.event;
+
+
+                            var limitLeft=e.clientX - dragBar.runway_l - innerLeft;
+                            var maxLeft = dragBar.runway_w - dragBar.thumb_w;
+
+
+                            if(limitLeft<=0) {
+                                limitLeft=0;
+                            }else if(limitLeft>=maxLeft){
+                                limitLeft=maxLeft;
+                            };
+
+                            that.style.left = limitLeft+'px';
+
+
+                            if (runway_data.type == 'hh') {
+                                _self.set(dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.r_max)) + ':' + dragBar.r_time_2);
+                            } else {
+                                _self.set(dragBar.t_time_0 + ':' + dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.t_max)));
+                            };
+                        };
+                    };
+
+                    document.onmouseup = function () {
+                        document.onmousemove = null;
+
+                    };
+                });
+            };
+
+        };
+
+        Vue.directive('drag', {
+            twoWay: true,
+            params: ['hhmm'],
+            bind: dragBar.bindFun,
+            // 移除对应DOM，会触发（v-if="true"）
+            update: dragBar.updateFun,
+            // 移除对应DOM，会触发（v-if="false"）
+            unbind: function () {
+                dragBar._num = 0;
+            }
+        });
+    })(Vue);
+
+</script>-->
+
+<!-- 功能初稿完成 -->
+<!--<script>
+
+
+    ;(function (Vue) {
+
+        var dragBar = {};
+
+        dragBar.getRect = function(element) { //返回元素相对于浏览器的偏移位置
+            var rect = element.getBoundingClientRect();
+            if (typeof rect.width == 'undefined') { // rect.width,    //IE中无法获取
+                return {
+                    width: rect.right - rect.left,
+                    height: rect.bottom - rect.top,
+                    top: rect.top,						//元素本身无需绝对定位等
+                    bottom: rect.bottom,
+                    left: rect.left,
+                    right: rect.right
+                };
+            }
+            return rect;
+        };
+
+        /*
+         *   dom 的 dragBar.contains方法
+         *   https://www.cnblogs.com/litao229/archive/2012/06/20/2555968.html
+         *   https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
+         * */
+
+        dragBar.contains  = function(root , el) {
+            if (root.compareDocumentPosition)
+                return root === el || !!(root.compareDocumentPosition(el) & 16);
+            if (root.contains && el.nodeType === 1){
+                return root.contains(el) && root !== el;
+            }
+            while ((el = el.parentNode))
+                if (el === root) return true;
+            return false;
+        };
+
+        /*
+         *  判断DOM元素是否已经插入document中
+         * */
+        dragBar.insertedDom = function (arr, callback) {
+            var num = 0;
+
+            for (var i=0; i<arr.length; i++) {
+                var elem = arr[i];
+
+                if (elem.timer) {
+                    console.log('-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;clear&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;');
+                    clearInterval(elem.timer)
+                };
+                // if (dragBar.contains(document.body, elem)) return;
+                // setTimeout(function () {
+                elem.timer = setInterval(function () {
+                    if (dragBar.contains(document.body, elem)) {
+                        num ++;
+                        clearInterval(elem.timer);
+                        if (num == arr.length) {
+                            console.log('-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;callback&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;');
+                            callback && callback();
+                        };
+                    };
+                }, 300)
+                // }, 300)
+            };
+        };
+
+        dragBar.addZero = function (num) {
+            return Number(num) < 10? '0' + num : num;
+        };
+
+        dragBar.runway_w = 0;
+        dragBar.runway_l = 0;
+        dragBar.thumb_w = 0;
+        dragBar.cur = 0;
+        dragBar.r_max = 0;
+        dragBar.t_max = 0;
+
+        var _Time = "";
+
+        dragBar.bindFun = function () {
+
+
+            var _self = this;
+
+            var runway_el = _self.el;
+
+            var runway_data = runway_el.dataset;
+
+            var thumb_el = runway_el.getElementsByClassName('dp-range-thumb')[0];
+
+            _Time = _self.params.hhmm.split(":");
+
+            console.log('event&#45;&#45;out：', _Time);
+
+            dragBar.insertedDom([thumb_el, runway_el], function () {
+
+                dragBar.runway_w = dragBar.getRect(runway_el).width;
+                dragBar.runway_l = dragBar.getRect(runway_el).left;
+                dragBar.thumb_w = dragBar.getRect(thumb_el).width;
+
+                if (runway_data.type == 'hh') {
+                    dragBar.r_max = 23;
+                    dragBar.cur = Number(_Time[0]);
+                    // 拖拽 &#45;&#45;&#45;&#45; 初始化位置
+                    var _left = Math.floor((dragBar.cur/dragBar.r_max)*dragBar.runway_w - dragBar.thumb_w);
+                    thumb_el.style.left =(_left <=0 ? 0 : _left) + 'px';
+                } else {
+                    dragBar.t_max = 59;
+                    dragBar.cur = Number(_Time[1]);
+                    var _left = Math.floor((dragBar.cur/dragBar.t_max)*dragBar.runway_w - dragBar.thumb_w);
+                    thumb_el.style.left = (_left <=0 ? 0 : _left) + 'px';
+                };
+            });
+
+            thumb_el.onmousedown = function (event) {
+                var e = event || window.event;
+                var that = this;
+
+
+                console.log('mousedown：', _Time);
+
+                thumb_el.style.transitionProperty = "none";
+
+                var thumb_l = dragBar.getRect(thumb_el).left;
+                var thumb_clientx = e.clientX;
+                var innerLeft= thumb_clientx - thumb_l;
+
+
+                /*鼠标移动，span位移*/
+                document.onmousemove=function(event) {
+                    var e = event || window.event;
+
+                    console.log('mousemove：', _Time);
+
+                    var limitLeft=e.clientX - dragBar.runway_l - innerLeft;
+                    var maxLeft = dragBar.runway_w - dragBar.thumb_w;
+
+                    if(limitLeft<=0) {
+                        limitLeft=0;
+                    }else if(limitLeft>=maxLeft){
+                        limitLeft=maxLeft;
+                    };
+
+                    that.style.left = limitLeft+'px';
+
+
+                    if (runway_data.type == 'hh') {
+                        // console.log('set -&#45;&#45; hh', _Time[1]);
+                        _self.set(dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.r_max)) + ':' + _Time[1]);
+                    } else {
+                        // console.log('set -&#45;&#45; mm', _Time[0]);
+                        _self.set(_Time[0] + ':' + dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.t_max)));
+                    };
+                };
+            };
+
+            document.onmouseup = function () {
+                document.onmousemove = null;
+
+            };
+        };
+
+        dragBar.updateFun = function (value) {
+            console.log('update: ', value);
+            _Time = value.split(":");
+        };
+
+        Vue.directive('drag', {
+            twoWay: true,
+            params: ['hhmm'],
+            bind: dragBar.bindFun,
+            // 移除对应DOM，会触发（v-if="true"）
+            update: dragBar.updateFun,
+            // 移除对应DOM，会触发（v-if="false"）
+            unbind: function () {
+
+            }
+        });
+    })(Vue);
+
+</script>-->
+<!--  基本定稿-->
+<!--<script>
+
+
+    ;(function (Vue) {
+
+        var dragBar = {};
+
+        dragBar.getRect = function(element) { //返回元素相对于浏览器的偏移位置
+            var rect = element.getBoundingClientRect();
+            if (typeof rect.width == 'undefined') { // rect.width,    //IE中无法获取
+                return {
+                    width: rect.right - rect.left,
+                    height: rect.bottom - rect.top,
+                    top: rect.top,						//元素本身无需绝对定位等
+                    bottom: rect.bottom,
+                    left: rect.left,
+                    right: rect.right
+                };
+            }
+            return rect;
+        };
+
+        /*
+         *   dom 的 dragBar.contains方法
+         *   https://www.cnblogs.com/litao229/archive/2012/06/20/2555968.html
+         *   https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
+         * */
+
+        dragBar.contains  = function(root , el) {
+            if (root.compareDocumentPosition)
+                return root === el || !!(root.compareDocumentPosition(el) & 16);
+            if (root.contains && el.nodeType === 1){
+                return root.contains(el) && root !== el;
+            }
+            while ((el = el.parentNode))
+                if (el === root) return true;
+            return false;
+        };
+
+        /*
+         *  判断DOM元素是否已经插入document中
+         * */
+        dragBar.insertedDom = function (arr, callback) {
+            var num = 0;
+
+            for (var i=0; i<arr.length; i++) {
+                var elem = arr[i];
+
+                if (elem.timer) clearInterval(elem.timer);
+                // setTimeout(function () {
+                elem.timer = setInterval(function () {
+                    if (dragBar.contains(document.body, elem)) {
+                        num ++;
+                        clearInterval(elem.timer);
+                        if (num == arr.length) {
+                            callback && callback();
+                        };
+                    };
+                }, 300)
+                // }, 300)
+            };
+        };
+
+        dragBar.addZero = function (num) {
+            return Number(num) < 10? '0' + num : num;
+        };
+
+        dragBar.runway_w = 0;
+        dragBar.runway_l = 0;
+        dragBar.thumb_w = 0;
+        dragBar.cur = 0;
+        dragBar.r_max = 0;
+        dragBar.t_max = 0;
+        dragBar._Time = "";
+
+        dragBar.bindFun = function () {
+
+            var _self = this;
+
+            var runway_el = _self.el;
+
+            var runway_data = runway_el.dataset;
+
+            var thumb_el = runway_el.getElementsByClassName('dp-range-thumb')[0];
+
+            // 获取传入参数
+            dragBar._Time = _self.params.hhmm.split(":");
+
+            console.log('event&#45;&#45;out：', dragBar._Time);
+
+            // v-if true 检测元素是否已插入dom
+            dragBar.insertedDom([thumb_el, runway_el], function () {
+
+                dragBar.runway_w = dragBar.getRect(runway_el).width;
+                dragBar.runway_l = dragBar.getRect(runway_el).left;
+                dragBar.thumb_w = dragBar.getRect(thumb_el).width;
+
+                if (runway_data.type == 'hh') {
+                    dragBar.r_max = 23;
+                    dragBar.cur = Number(dragBar._Time[0]);
+                    // 拖拽 &#45;&#45;&#45;&#45; 初始化位置
+                    var _left = Math.floor((dragBar.cur/dragBar.r_max)*dragBar.runway_w - dragBar.thumb_w);
+                    thumb_el.style.left =(_left <=0 ? 0 : _left) + 'px';
+                } else {
+                    dragBar.t_max = 59;
+                    dragBar.cur = Number(dragBar._Time[1]);
+                    var _left = Math.floor((dragBar.cur/dragBar.t_max)*dragBar.runway_w - dragBar.thumb_w);
+                    thumb_el.style.left = (_left <=0 ? 0 : _left) + 'px';
+                };
+            });
+
+
+            thumb_el.onmousedown = function (event) {
+                var e = event || window.event;
+                var that = this;
+
+                console.log('mousedown：', dragBar._Time);
+
+                thumb_el.style.transitionProperty = "none";
+
+                var thumb_l = dragBar.getRect(thumb_el).left;
+                var thumb_clientx = e.clientX;
+                var innerLeft= thumb_clientx - thumb_l;
+
+
+                /*鼠标移动，span位移*/
+                document.onmousemove=function(event) {
+                    var e = event || window.event;
+
+                    console.log('mousemove：', dragBar._Time);
+
+                    var limitLeft=e.clientX - dragBar.runway_l - innerLeft;
+                    var maxLeft = dragBar.runway_w - dragBar.thumb_w;
+
+                    if(limitLeft<=0) {
+                        limitLeft=0;
+                    }else if(limitLeft>=maxLeft){
+                        limitLeft=maxLeft;
+                    };
+
+                    that.style.left = limitLeft+'px';
+
+
+                    // 同步传入参数(双向数据绑定)
+                    if (runway_data.type == 'hh') {
+                        // console.log('set -&#45;&#45; hh', dragBar._Time[1]);
+                        _self.set(dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.r_max)) + ':' + dragBar._Time[1]);
+                    } else {
+                        // console.log('set -&#45;&#45; mm', dragBar._Time[0]);
+                        _self.set(dragBar._Time[0] + ':' + dragBar.addZero(Math.floor((limitLeft/maxLeft)*dragBar.t_max)));
+                    };
+                };
+            };
+
+            document.onmouseup = function () {
+                document.onmousemove = null;
+            };
+        };
+
+        dragBar.updateFun = function (value) {
+            console.log('update: ', value);
+            // 更新最新传入参数
+            dragBar._Time = value.split(":");
+        };
+
+        Vue.directive('drag', {
+            twoWay: true,
+            params: ['hhmm'],
+            // 初始化，只执行一次
+            bind: dragBar.bindFun,
+            // value值发生变化时，会触发执行
+            // 移除对应DOM，会触发（v-if="true"）
+            update: dragBar.updateFun,
+            // 移除对应DOM，会触发（v-if="false"）
+            unbind: function () {
+
+            }
+        });
+
+    })(Vue);
+
+</script>-->

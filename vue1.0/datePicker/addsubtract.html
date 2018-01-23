@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="src/vue.datepicker.css">
+    <style>
+        .outbox {
+            margin: 10px auto;
+            width: 1000px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .top10 {
+            top:10px;
+        }
+        .right2 {
+            right:2px;
+        }
+        .pr12 {
+            padding-right: 12px;
+        }
+        .user-no-select {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    </style>
+    <script type="text/javascript" src="src/jquery.js"></script>
+    <script type="text/javascript" src="src/vue.min.js"></script>
+    <script type="text/javascript" src="src/vue.datepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            new Vue({
+                el: 'body',
+                data: {
+                    width: 130,
+                    time: '2017-11-21',
+                    endDate: '2017-11-22',
+                    /*item: {
+                     startTime: new Date('2016-03-31').getTime(),
+                     endTime: new Date('2016-03-31').getTime()
+                     },*/
+                    // 营业统收----获取数据
+                    getBusinessStatisticsData: {
+                        fromDate: '2017-09-08',
+                        toDate: '2017-10-09'
+                    }
+                },
+                methods:{
+                    confrim:function(startTime,endTime){
+                        console.log(startTime);
+                        console.log(endTime);
+                    },
+                    businessStatisticDate: function () {
+
+                    }
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+    <div class="outbox">
+        <!--<div>实例1</div>
+        <hr />
+        <br/>
+        <mz-datepicker format="yyyy-MM-dd" clearable :time.sync="time" :width="width"></mz-datepicker>
+        <mz-datepicker format="yyyy-MM-dd" clearable :time.sync="time" :width="width"  :tips="'入住'"></mz-datepicker>
+
+        <br/>
+        <br/>
+        <div>实例2</div>
+        <hr />
+        <br/>
+        <mz-datepicker format="yyyy-MM-dd" :time.sync="time" :width="width" :tips="'入住'" limitpredate></mz-datepicker>
+        <hr />
+        <br/>-->
+        <mz-datepicker format="yyyy-MM-dd" :time.sync="time" :width="width" :tips="'入住'" limitpredate></mz-datepicker>
+        -
+        <mz-datepicker format="yyyy-MM-dd" :time.sync="time" :end-date.sync="endDate" twosingle :width="width" :tips="'离店'" limitpredate></mz-datepicker>
+
+        <!--<br/>
+        <br/>
+        <div>实例3</div>
+        <hr />
+        <br/>
+        <mz-datepicker format="yyyy-MM-dd" :start-time.sync="getBusinessStatisticsData.fromDate" :end-time.sync="getBusinessStatisticsData.toDate" range en confirm :on-confirm="businessStatisticDate"></mz-datepicker>
+        <p>input 样式</p>
+        <br />
+        <div class="fz24 form-inline clearfix w100 inline-block">
+            <span class="input-group-minus fl"></span>
+            <span class="fl">
+                <input type="text" maxlength="4" class="form-control input-sm w40 fl ac pr5 pl5">
+            </span>
+            <span class="input-group-add fl"></span>
+        </div>-->
+        <!--<div id="demo">
+            <add-substract :max.sync="max"  :min.sync="min" :value.sync="value"  :tips="'晚'"></add-substract>
+        </div>-->
+    </div>
+</body>
+</html>
+<script>
+    // 增加 减少组件 vue插件
+    var yzlObj = yzlObj || {};
+    ;(function(yzl){
+
+        var tm = '<div class="fz24 form-inline clearfix w100 inline-block user-no-select">'+
+            '      <span class="input-group-minus fl" @click="substract" :class="{ninadd:min >= value}"></span>'+
+            '      <span class="fl pos-rel">'+
+            '         <input type="text" class="form-control input-sm w40 fl ac pl5" :class="{pr12:tips?true:false}" v-model="value" >'+
+            '         <i class="pos-abs fz12 top10 right2" v-if="tips">{{tips}}</i>'+
+            '      </span>'+
+            '     <span class="input-group-add fl" @click="add" :class="{maxadd: max <= value}"></span>'+
+            ' </div>';
+
+        var addSubtractVue = Vue.extend({
+            template: tm,
+            props: {
+                max: {
+                    type: Number,
+                    default: 0
+                },
+                min: {
+                    type: Number,
+                    default: 0
+                },
+                /* v-model="value" value不能规定为number,input输入的时候，会默认为字符串*/
+                value: {
+                    twoWay: true
+                },
+                tips: {
+                    type: String,
+                    default: ''
+                }
+            },
+            data: function(){
+                return {
+                    objVal: this.value
+                }
+            },
+            watch: {
+                value: function (newVal) {
+                    var _self = this;
+                    var reg = /\s*/g;
+                    var val = newVal;
+                    if(typeof newVal == 'string') {
+                        val = val.replace(reg, "");
+                        if (val == "" || Number(val) < _self.min) {
+                            _self.value = _self.min;
+                        };
+                    };
+                }
+            },
+            ready: function () {
+
+            },
+            computed: {
+            },
+            methods: {
+                substract: function () {
+                    var _self = this;
+
+                    if (_self.value <= _self.min) {
+                        _self.value = _self.min;
+                    } else {
+                        _self.value = Number( _self.value) - 1;
+                    };
+                },
+                add: function () {
+                    var _self = this;
+
+                    if (_self.value >= _self.max) {
+                        _self.value = _self.max;
+                    } else {
+                        _self.value = Number( _self.value) + 1;
+                    };
+                }
+            },
+            events: {
+
+            }
+        });
+
+        yzl.addSubtractVue = addSubtractVue;
+
+    })(yzlObj);
+
+
+    // 应用1
+    var multiVue = new Vue({
+        el : '#demo',
+        data: {
+            max: 10,
+            min: 0,
+            value: 3,
+            width: 120,
+            time: '2017-09-11',
+            endDate: '2017-09-15',
+            /*item: {
+             startTime: new Date('2016-03-31').getTime(),
+             endTime: new Date('2016-03-31').getTime()
+             },*/
+            // 营业统收----获取数据
+            getBusinessStatisticsData: {
+                fromDate: '2017-09-08',
+                toDate: '2017-10-09'
+            }
+        },
+        watch: {
+
+        },
+        components:{
+            'add-substract': yzlObj.addSubtractVue
+        },
+        methods: {
+            initData: function () {
+
+            },
+            confrim:function(startTime,endTime){
+                console.log(startTime);
+                console.log(endTime);
+            },
+            businessStatisticDate: function () {
+
+            }
+        }
+    });
+
+    multiVue.initData();
+
+</script>

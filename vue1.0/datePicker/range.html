@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .dp-range-content {
+            margin: 0 auto;
+            position: relative;
+            height: 30px;
+            width: 200px;
+        }
+        .dp-rang-progress,
+        .dp-rang-ban,
+        .dp-range-runway {
+            position: absolute;
+            top: 50%;
+            margin-top: -2px;
+            left: 0;
+            border-top-style: solid;
+            border-top-width: 2px;
+        }
+        .dp-rang-progress {
+            transition: width 0.8s;
+            width: 0px;
+            border-top-color: #0fa1ff;
+            z-index: 8;
+        }
+
+        .dp-rang-ban {
+            transition: width 0.8s;
+            width: 0px;
+            border-top-color: #ccc;
+            z-index: 10;
+        }
+        .dp-range-runway {
+            border-top-color: #a9acb1;
+            width: 100%;
+        }
+
+        .dp-range-thumb {
+            background-color: #fff;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            cursor: move;
+            box-shadow: 0 1px 3px rgba(0,0,0,.4);
+            transition: left 0.8s;
+            z-index: 11;
+        }
+        .user-no-select {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        /*---------------------------*/
+        .mt100 {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!--  拖拽Test start -->
+    <div class="mt100">
+        <button @click="isShow = !isShow">开关</button>
+        <div class="user-no-select">小时: {{hhmm}}</div>
+        <template  v-if="isShow">
+            <div class="dp-range-content" >
+                <div class="dp-range-runway" v-drag="hhmm" data-type="hh" data-step="0" :hhmm="hhmm" data-move="0">
+                    <span class="dp-rang-progress"></span>
+                    <span class="dp-rang-ban"></span>
+                    <span class="dp-range-thumb"></span>
+                </div>
+            </div>
+            <div class="dp-range-content" >
+                <div class="dp-range-runway" v-drag="hhmm" data-type="mm" data-step="2" :hhmm="hhmm" data-move="1">
+                    <span class="dp-rang-progress"></span>
+                    <span class="dp-rang-ban"></span>
+                    <span class="dp-range-thumb"></span>
+                </div>
+            </div>
+        </template>
+    </div>
+    <!--  拖拽Test end -->
+</body>
+</html>
+<script type="text/javascript" src="src/vue.min.js"></script>
+<script type="text/javascript" src="src/range.js"></script>
+<script type="text/javascript">
+
+    new Vue({
+        el: 'body',
+        data: {
+            hhmm: '18:50',
+            isShow: false,
+        },
+        methods:{
+        }
+    });
+
+</script>

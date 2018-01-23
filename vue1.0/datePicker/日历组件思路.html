@@ -1,0 +1,113 @@
+'<div class="dp-range-content" >'+
+'        <div class="dp-range-runway" v-drag="{obj: h_obj}" >'+
+'            <span class="dp-range-thumb"></span>'+
+'        </div>'+
+'</div>' +
+'<div class="dp-range-content" >'+
+'        <div class="dp-range-runway" v-drag="{obj: m_obj}" >'+
+'            <span class="dp-range-thumb"></span>'+
+'        </div>'+
+'</div>' +
+
+showHHMM(no+1)
+
+
+// 时，分
+
+
+入住 离店 如果是同一天，
+
+// 1.联动
+	
+	离店时分 ---> 自动设置为入住时分， 顺延1小时
+
+	如果入住时分为23:59，则离店设置为：隔天00:00
+
+	如果入住时分，距离23:59分，不满足1小时，则设置离店时分为：23:59
+
+	// checkinDate的时间
+    time: {
+        twoWay: true
+    },
+    // 两个独立日历 --- checkoutDate
+    endDate: {
+        type: String,
+        default: ''
+    },
+    // 有两个独立日历
+    twosingle: {
+        type: Boolean,
+        default: false
+    },
+		
+	//-----------------------------实现
+	// 两个独立日历 ---- checkoutDate
+    // _self.time    checkinDate的时间
+    // _self.inhhmm  两个独立日历 > checkoutDate面板 > 保存checkInTime
+    // _self.hhmm    独立日历 --------- 当前日历面板时分
+    endDate: function (val) {
+        var _self = this;
+        // _self.twosingle 代表checkoutDate，独立日历面板
+        if (val && _self.twosingle) {
+            var start_time = new Date(_self.time).getTime();
+            var end_time = new Date(val).getTime();
+            var _oneHour = 60*60*1000;
+            var _oneDay = 24*_oneHour;
+            // 如果是同一天
+            if (end_time == start_time) {
+                // 开始
+                var _inT = new Date(_self.time +' ' + _self.inhhmm).getTime();
+                // 离开
+                var _outT = new Date(val +' ' + _self.hhmm).getTime();
+                // 当天最晚时间
+                var _inEndT = new Date(_self.time +' ' + '23:59').getTime();
+                if (_inT >= _outT) {
+                    // 开始时间 > 离开时间，则顺延1小时
+                    if (_inEndT >= (_inT + _oneHour)) {
+                        _self.hhmm = _self.stringify(new Date(_inT + _oneHour), 'HH:mm');
+                    } else if ('23:59'  == _self.inhhmm) {
+                        // 开始时间为23:59，则离店时间为隔天00:00
+                        var _time = new Date(_self.time);
+                        _time.setDate(_time.getDate() + 1);
+                        _self.endDate = _self.stringify(new Date(_time), 'yyyy-MM-dd');
+                        _self.hhmm = '00:00';
+                        // 否则，离店时间为: 23: 59
+                    } else {
+                        _self.hhmm = _self.stringify(new Date(_self.time +' ' + '23:59'), 'HH:mm');
+                    };
+                };
+            };
+        };
+    },
+
+
+    
+// 2.离店时分禁止滚动
+
+	入住离店，为同一天，则:
+	
+	离店时分，（入住以前）禁止滚动
+	
+	参数:
+
+		离店窗口 ---> 只需知道是否禁用
+
+
+// 3.滚动条
+	
+	禁用灰色
+	允许全局滚动则，为蓝色
+
+    rang.js日历特制：
+        禁止滚动，必须以入住时分来禁止
+        单独抽取
+
+//4. ban/progress长度不对
+
+
+//5. step
+
+// --------------------------
+    cur
+    max
+    不能再同时生成两个拖拽对象
