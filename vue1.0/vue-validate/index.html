@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .outbox {
+            margin: 10px auto;
+            width: 1000px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .hide{
+            visibility: hidden;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="outbox" style="margin-top: 100px;">
+       <div class="item" v-validate v-el:item>
+           <!--电话: <input type="text" class="validate"><br/><br/>-->
+           <!--custom[mobile],-->
+           <!--手机: <input type="text" class="validate[required, maxSize[11], mobile]" data-reg-mobile="/[0-9]/" data-err-required="手机号不能为空!"
+                      data-err-max-size="手机号长度不够!" data-err-mobile="请输入正确的手机号码!"
+            ><br/><br/>-->
+           证件: <input type="text" class="validate[required,maxSize[11], custom[isNumber]]" data-reg-user-name="^1[34578]\d{9}$"
+                      data-reg-is-number="^[0-9]{11}$" data-err-required="证件号不能为空!"
+                      data-err-max-size="证件号长度不够!" data-err-user-name="请入正确的证件号码!"
+                      data-err-is-number="请入数字号码!"
+            ><br/><br/>
+           <!--<input type="text" class="validate[required, custom[userName_min], maxSize[21]] hide"  id="hideIpt"><br/><br/>-->
+           <button @click="validateForm">确定</button>
+       </div>
+    </div>
+</body>
+</html>
+<script src="./src/vue.min.js"></script>
+<script src="./src/validate.js"></script>
+<script type="text/javascript">
+    // this.$els.popup.focus();
+    new Vue({
+        el: 'body',
+        data: {
+        },
+        methods:{
+            validateForm: function () {
+                this.$els.item.validateFun();
+            },
+        }
+    });
+
+
+   /* var getStyle = function (obj, attr) {
+        if (obj.currentStyle) {
+            return obj.currentStyle[attr];
+        } else {
+            return window.getComputedStyle(obj, null)[attr];
+        };
+    };
+
+    var $ = function (id) {
+        return document.getElementById(id);
+    };
+
+    console.log(getStyle($('hideIpt'), 'display'));
+    console.log(getStyle($('hideIpt'), 'visibility'));*/
+
+</script>

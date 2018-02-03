@@ -12,10 +12,10 @@ var port = 8787;
 
 app.use('/yzlpms', proxy({target: 'http://dev.inzlink.com', changeOrigin: true}));
 
-app.use(express.static('./'))
+app.use(express.static('./vue-validate'))
 
 app.listen(port, function () {
     console.log('服务器启动完成....');
-    var uri = 'http://localhost:' + port + '/dragbar/dragbar.html';
+    var uri = 'http://localhost:' + port + '/index.html';
     open(uri);
 });
