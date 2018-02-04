@@ -42,7 +42,8 @@
     };
 
     // 解开嵌套的validate[] 和 custom[]
-    // validate[required,maxSize[11], custom[userName,isNumber]] ==> [require, maxSize[11], custom[mobile], custom[isNumber]]
+    // validate[required,maxSize[11], custom[userName,isNumber]]
+    // ==> [require, maxSize[11], custom[mobile], custom[isNumber]]
     var val_cus_fun = function (str, name) {
         var list = [];
         // class="validate[required, custom[userName_min], maxSize[20]]"
@@ -50,14 +51,17 @@
         // 可考虑:element.classList = [] 但不能有空格、兼容性问题
         var _elem = str.match(reg);
         if (_elem && _elem[3]) {
-            // _elem[3] = "required, maxSize[11], custom[userName,isNumber]" ===> [required, maxSize[11], custom[isNumber], custom[userName]]
+            // _elem[3] = "required, maxSize[11], custom[userName,isNumber]"
+            // ===> [required, maxSize[11], custom[isNumber], custom[userName]]
             if (_elem[3].indexOf('custom[') > -1) {
                 var _cusReg = new RegExp(",\\s*custom\\[(.*)?\\]\\s*", "i");
-                // "required, maxSize[11], custom[userName,isNumber]" ===> custom[userName,isNumber] ==> "userName,isNumber"
+                // "required, maxSize[11], custom[userName,isNumber]"
+                // ===> custom[userName,isNumber] ==> "userName,isNumber"
                 var _cusStr = _elem[3].match(_cusReg) && _elem[3].match(_cusReg)[1];
                 // _cusStr = "userName,isNumber"
                 var _curList = _cusStr.split(',') || [];
-                // "required, maxSize[11], custom[userName,isNumber]" ===> "required, maxSize[11]"
+                // "required, maxSize[11], custom[userName,isNumber]"
+                // ===> "required, maxSize[11]"
                 list = _elem[3].replace(_cusReg, '').split(',') || [];
                 // list 和 _curList 拼接
                 for (var j=0; j<_curList.length; j++) {
@@ -83,8 +87,10 @@
             for (var i=0; i<list.length; i++) {
                 var listItem = (list[i]).trim();
                 var _subList = (listItem.match(reg_item)) || [];
-                // custom[userName_min] ==> _subList = [" custom[userName_min]", " custom", "userName_min", index: 0, input: " custom[userName_min]"]
-                // maxSize[20] ==> _subList = [" maxSize[20]", " maxSize", "20", index: 0, input: " maxSize[20]"]
+                // custom[userName_min]
+                // ==> _subList = [" custom[userName_min]", " custom", "userName_min", index: 0, input: " custom[userName_min]"]
+                // maxSize[20]
+                // ==> _subList = [" maxSize[20]", " maxSize", "20", index: 0, input: " maxSize[20]"]
                 if (_subList.length > 0) {
                     // validate.config内部属性
                     if (validate.config[_subList[1]]) {
@@ -172,7 +178,10 @@
 
                 for (var i=0; i<elems.length; i++) {
                     // 元素存在class ="validate" 且 不是隐藏元素
-                    if (hasClass(elems[i], 'validate') && (getStyle(elems[i], 'display') == 'block' || getStyle(elems[i], 'visibility') == 'visible')) {
+                    if (hasClass(elems[i], 'validate') &&
+                        (getStyle(elems[i], 'display') == 'block' ||
+                        getStyle(elems[i], 'visibility') == 'visible')
+                    ) {
 
                         _hasClassElemsArr.push(elems[i]);
                         analysisClass(elems[i], 'validate');
