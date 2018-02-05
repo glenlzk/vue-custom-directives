@@ -17,6 +17,33 @@
         return false;
     };
 
+    var removeClass = function (elem, clasName) {
+        var reg = new RegExp('(^|\\s)' + clasName + '($|\\s)', 'i'),
+            reg2 = new RegExp('\\s' + clasName + '\\s', 'i');
+        elemClas = elem.className,
+            str = '';
+
+        if (elemClas.match(reg)) {
+            if (reg2.test(elemClas)) {
+                str = elemClas.replace(reg2, ' ');
+            } else {
+                str = elemClas.replace(reg, '');
+            };
+        };
+        if (elemClas != str) elem.className = str;
+    };
+
+    //enent事件对象，跨浏览器的事件处理程序
+    var addHandler = function(element, type, handler) {
+        if (element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent('on' + type, handler);
+        } else {
+            element['on' + type] = handler;
+        };
+    };
+
     // 首字母大写
     var firToUpperCase = function (str) {
         return str.substring(0,1).toUpperCase() + str.substring(1);
@@ -40,6 +67,33 @@
 
         return _str.match(_reg)[1].toLowerCase();
     };
+
+    // 获取元素距离指定祖先的
+    var getAncestorLT = function (elem,  ancestorElem) {
+        var _left = elem.offsetLeft,
+            _top = elem.offsetTop,
+            par = elem.offsetParent;
+
+        while (par !== ancestorElem) {
+            _left += par.offsetLeft;
+            _top += par.offsetTop;
+            par = par.offsetParent;
+        };
+        return {
+            left : _left,
+            top : _top
+        };
+    };
+
+    //设置元素style样式
+    var setCss = function(elem, params) {
+        if(!elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style) {
+            return ;
+        };
+        for (var prop in params) {
+            elem.style[prop] = params[prop];
+        };
+    }
 
     // 解开嵌套的validate[] 和 custom[]
     // validate[required,maxSize[11], custom[userName,isNumber]]
@@ -135,26 +189,60 @@
             case 'boolean':
                 if (_elem.reg[pop] && _value == '') {
                     // data-err-required="手机号不能为空!"
-                    alert(_dataObj['err' + firToUpperCase(pop)]);
+                    // alert(_dataObj['err' + firToUpperCase(pop)]);
                     // console.log('err' + firToUpperCase(pop));
                     return false;
                 };
                 return true;
             case 'number':
                 if (_value.length < _elem.reg[pop]) {
-                    alert(_dataObj['err' + firToUpperCase(pop)]);
+                    // alert(_dataObj['err' + firToUpperCase(pop)]);
                     return false;
                 };
                 return true;
             default:
                 var _reg= new RegExp(_elem.reg[pop], "i");
                 if (!_reg.test(_value)) {
-                    alert(_dataObj['err' + firToUpperCase(pop)]);
+                   // alert(_dataObj['err' + firToUpperCase(pop)]);
                     return false;
                 }
                 return true;
 
         };
+    };
+
+    // 错误提示
+    var errTipsFun = function (_elem, pop) {
+        var _dataObj = _elem.dataset;
+
+        // tips不存在
+        if (!_elem.tipElem) {
+
+            _elem.tipElem = document.createElement('div');
+            _elem.tipElem.className = "formErrorBox";
+            getErrorTxt(_elem.tipElem);
+
+            _elem.parentNode.appendChild(_elem.tipElem);
+            _elem.className += ' validate-error';
+        } else {
+            getErrorTxt(_elem.tipElem);
+        };
+
+        function getErrorTxt (elem) {
+            var str = "<div class=\"formErrorContent\">"+
+                        "{name}"+
+                    "</div>"+
+                    "<div class=\"formErrorArrow\">"+
+                    "    <em>◆</em>"+
+                    "    <span>◆</span>"+
+                    "</div>";
+
+            var reg = new RegExp(/\{name\}/, "i");
+            str = str.replace(reg, _dataObj['err' + firToUpperCase(pop)]);
+
+            elem.innerHTML = str;
+        };
+
     };
 
     // 2.全局变量，通过window.dragBar暴露出去
@@ -172,9 +260,9 @@
             params: [],
             // 初始化，只执行一次
             bind: function () {
-                var elems = this.el.getElementsByTagName('*');
+                var _self = this.el;
+                var elems = _self.getElementsByTagName('*');
                 var _hasClassElemsArr = [];
-
 
                 for (var i=0; i<elems.length; i++) {
                     // 元素存在class ="validate" 且 不是隐藏元素
@@ -187,20 +275,46 @@
                         analysisClass(elems[i], 'validate');
                     };
                 };
+                // 给元素添加事件 > 校验
+                for (var j=0; j<_hasClassElemsArr.length; j++) {
+                    var _arrItem = _hasClassElemsArr[j];
+                    switch (_arrItem.tagName) {
+                        case 'INPUT':
+                            addHandler(_arrItem,'blur', function () {
+                                if (checkEveryElem(this, false) && this.tipElem) {
+                                    this.parentNode.removeChild(this.tipElem);
+                                    this.tipElem = null;
+                                    removeClass(this, 'validate-error');
+                                };
+                            });
+                            break;
+                    };
+                };
 
-                this.el.validateFun = function () {
+                _self.validateFun = function () {
                     for (var i=0; i<_hasClassElemsArr.length; i++) {
                         // _elem.reg = {required: true, maxSize: 20};
                         var _elem = _hasClassElemsArr[i];
-                        for (var pop in _elem.reg) {
-                            if (_elem.reg.hasOwnProperty(pop)) {
-                                var checkResult = checkForValid(_elem, pop);
-                                if (checkResult) continue;
-                                return checkResult;
+                        if (!checkEveryElem(_elem, true)) return false;
+                    };
+                    return true;
+                };
+
+
+                // bln = true ---> scroll
+                // 分别校验 > 每个元素校验规则是否正确
+                function checkEveryElem(elem, bln) {
+                    for (var pop in elem.reg) {
+                        if (elem.reg.hasOwnProperty(pop)) {
+                            var checkResult = checkForValid(elem, pop);
+                            if (checkResult) continue;
+                            if (!checkResult) {
+                                errTipsFun(elem, pop);
+                                bln && (_self.scrollTop = getAncestorLT(elem, _self).top);
                             };
+                            return checkResult;
                         };
                     };
-
                     return true;
                 };
 

@@ -11,8 +11,80 @@
             border-radius: 5px;
             padding: 10px;
         }
+        .validate-content {
+            position: relative;
+        }
+        .item {
+            height: 200px;
+            overflow-y: auto;
+            position: relative;
+        }
         .hide{
             visibility: hidden;
+        }
+
+        /*  ---------------- */
+        .formErrorBox {
+            width: auto;
+            position: absolute;
+            top: 33px;
+            left: 42px;
+            z-index: 9999;
+        }
+        .formErrorContent {
+            width: auto;
+            background: #fff;
+            position: relative;
+            color: #ff3f1a;
+            line-height: 18px;
+            font-size: 12px;
+            border: 1px solid #d8d6d7;
+            padding: 5px 8px;
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            -o-border-radius: 3px;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+
+        }
+        .formErrorArrow {
+            position: absolute;
+            top: -31px;
+            left: 10px;
+        }
+        .formErrorArrow em,
+        .formErrorArrow span{
+            font-style: normal;
+            font-size: 30px;
+            position: absolute;
+            color: #d8d6d7;
+            left: 4px;
+            top: 10px;
+        }
+
+        .formErrorArrow span{
+            color: white;
+            top: 11px
+        }
+
+        .pos-rel {
+            position: relative;
+        }
+
+        input:focus,
+        textarea:focus{
+            outline: 0;
+        }
+
+        input, textarea {
+            border: 1px solid #ccc;
+            padding: 0;
+            margin: 0;
+            outline-style: none;
+        }
+
+        input.validate-error {
+            border-color: #ff674e!important;
         }
 
     </style>
@@ -20,19 +92,51 @@
 <body>
     <div class="outbox" style="margin-top: 100px;">
        <div class="item" v-validate v-el:item>
-           <!--电话: <input type="text" class="validate"><br/><br/>-->
-           <!--custom[mobile],-->
-           <!--手机: <input type="text" class="validate[required, maxSize[11], mobile]" data-reg-mobile="/[0-9]/" data-err-required="手机号不能为空!"
-                      data-err-max-size="手机号长度不够!" data-err-mobile="请输入正确的手机号码!"
-            ><br/><br/>-->
-           证件: <input type="text" class="validate[required,maxSize[11], custom[isNumber]]" data-reg-user-name="^1[34578]\d{9}$"
-                      data-reg-is-number="^[0-9]{11}$" data-err-required="证件号不能为空!"
-                      data-err-max-size="证件号长度不够!" data-err-user-name="请入正确的证件号码!"
-                      data-err-is-number="请入数字号码!"
-            ><br/><br/>
+           <div class="validate-content">
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <!--<div class="pos-rel">
+                   &lt;!&ndash;<div class="formErrorBox">
+                       <div class="formErrorContent">
+                           请输入姓名
+                       </div>
+                       <div class="formErrorArrow">
+                           <em>◆</em>
+                           <span>◆</span>
+                       </div>
+                   </div>&ndash;&gt;
+                   电话: <input type="text" class="validate[required]" data-err-required="电话号码不能为空!">
+               </div><br/>-->
+               <!--custom[mobile],-->
+
+               <div class="pos-rel">
+               手机: <input type="text" class="validate[required, maxSize[11], mobile]" data-reg-mobile="/[0-9]/" data-err-required="手机号不能为空!"
+                          data-err-max-size="手机号长度不够!" data-err-mobile="请输入正确的手机号码!"
+
+           ></div><br/><br/>
+
+               <div class="pos-rel">
+               证件: <input type="text" class="validate[required,maxSize[11], custom[isNumber]]" data-reg-user-name="^1[34578]\d{9}$"
+                          data-reg-is-number="^[0-9]{11}$" data-err-required="证件号不能为空!"
+                          data-err-max-size="证件号长度不够!" data-err-user-name="请入正确的证件号码!"
+                          data-err-is-number="请入数字号码!"
+
+           ></div><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+           </div>
+
            <!--<input type="text" class="validate[required, custom[userName_min], maxSize[21]] hide"  id="hideIpt"><br/><br/>-->
-           <button @click="validateForm">确定</button>
-       </div>
+       </div><br/><br/>
+        <button @click="validateForm">确定</button>
     </div>
 </body>
 </html>

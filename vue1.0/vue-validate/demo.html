@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scrollTop</title>
+    <style>
+        .outbox {
+            margin: 10px auto;
+            width: 1000px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .validate-content {
+            position: relative;
+            height: 100px;
+            overflow-y: auto;
+        }
+        .item {
+        }
+        .hide{
+            visibility: hidden;
+        }
+
+    </style>
+</head>
+<body>
+<div class="outbox" style="margin-top: 100px;">
+    <div class="item" v-validate v-el:item>
+        <div class="validate-content" id="validateContent">
+            <div style="position: absolute;">
+                <div style="position: absolute;">
+                    <h2>哈哈哈哈啊</h2><br/>
+                    <h2>哈哈哈哈啊</h2><br/>
+                    <h2>哈哈哈哈啊</h2><br/>
+                    <h2>哈哈哈哈啊</h2><br/>
+                    <h2>哈哈哈哈啊</h2><br/>
+                    <h2>哈哈哈哈啊</h2><br/>
+                    电话: <input type="text" class="validate[required]" data-err-required="电话号码不能为空!"><br/><br/>
+                    <!--custom[mobile],-->
+                    手机: <input type="text" class="validate[required, maxSize[11], mobile]" data-reg-mobile="/[0-9]/" data-err-required="手机号不能为空!"
+                               data-err-max-size="手机号长度不够!" data-err-mobile="请输入正确的手机号码!"
+                ><br/><br/>
+                    证件: <input type="text" class="validate[required,maxSize[11], custom[isNumber]]" data-reg-user-name="^1[34578]\d{9}$"
+                               data-reg-is-number="^[0-9]{11}$" data-err-required="证件号不能为空!"
+                               data-err-max-size="证件号长度不够!" data-err-user-name="请入正确的证件号码!"
+                               data-err-is-number="请入数字号码!"
+                               id="zhengjian"
+                ><br/><br/>
+                    <h2>哈哈哈哈啊</h2><br/><br/>
+                    <h2>哈哈哈哈啊</h2><br/><br/>
+                    <h2>哈哈哈哈啊</h2><br/><br/>
+                    <h2>哈哈哈哈啊</h2><br/><br/>
+                    <h2>哈哈哈哈啊</h2><br/><br/>
+                    <h2>哈哈哈哈啊</h2><br/><br/>
+                </div>
+            </div>
+        </div>
+
+        <!--<input type="text" class="validate[required, custom[userName_min], maxSize[21]] hide"  id="hideIpt"><br/><br/>-->
+    </div><br/><br/>
+    <button onclick="validateForm()">确定</button>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+
+   /* function validateForm() {
+        $('validateContent').scrollTop = getAncestorLT($('zhengjian'), 'validateContent').top;
+    };
+
+    console.log($('validateContent').scrollHeight);
+    console.log($('validateContent').clientHeight);
+    console.log(getAncestorLT($('zhengjian'), 'validateContent').left, getAncestorLT($('zhengjian'), 'validateContent').top);*/
+
+   var getAncestorLT = function (elem,  ancestorId,  ancestorElem) {
+       var _left = elem.offsetLeft,
+           _top = elem.offsetTop,
+           par = elem.offsetParent;
+
+       while (par.id !== ancestorId) {
+           _left += par.offsetLeft;
+           _top += par.offsetTop;
+           par = par.offsetParent;
+       };
+
+       console.log(par === ancestorElem);
+       return {
+           left : _left,
+           top : _top
+       };
+   };
+
+
+   var $ = function (id) {
+       return document.getElementById(id);
+   };
+
+
+   function validateForm() {
+       $('validateContent').scrollTop = getAncestorLT($('zhengjian'), 'validateContent', $('validateContent')).top;
+   };
+
+
+</script>
