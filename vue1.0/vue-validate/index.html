@@ -71,6 +71,10 @@
             position: relative;
         }
 
+        .inl-block {
+            display: inline-block;
+        }
+
         input:focus,
         textarea:focus{
             outline: 0;
@@ -81,6 +85,7 @@
             padding: 0;
             margin: 0;
             outline-style: none;
+            display: block;
         }
 
         input.validate-error {
@@ -112,20 +117,19 @@
                    电话: <input type="text" class="validate[required]" data-err-required="电话号码不能为空!">
                </div><br/>-->
                <!--custom[mobile],-->
-
-               <div class="pos-rel">
-               手机: <input type="text" class="validate[required, maxSize[11], mobile]" data-reg-mobile="/[0-9]/" data-err-required="手机号不能为空!"
+               手机:
+               <div class="pos-rel inl-block">
+               <input type="text" class="validate[required, maxSize[11], mobile]" data-reg-mobile="/[0-9]/" data-err-required="手机号不能为空!"
                           data-err-max-size="手机号长度不够!" data-err-mobile="请输入正确的手机号码!"
-
-           ></div><br/><br/>
-
-               <div class="pos-rel">
-               证件: <input type="text" class="validate[required,maxSize[11], custom[isNumber]]" data-reg-user-name="^1[34578]\d{9}$"
+                ></div><br/><br/>
+               证件:
+               <div class="pos-rel inl-block">
+                <input type="text" class="validate[required,maxSize[11], custom[isNumber]]" data-reg-user-name="^1[34578]\d{9}$"
                           data-reg-is-number="^[0-9]{11}$" data-err-required="证件号不能为空!"
                           data-err-max-size="证件号长度不够!" data-err-user-name="请入正确的证件号码!"
                           data-err-is-number="请入数字号码!"
-
-           ></div><br/><br/>
+                >
+               </div><br/><br/>
                <h2>哈哈哈哈啊</h2><br/><br/>
                <h2>哈哈哈哈啊</h2><br/><br/>
                <h2>哈哈哈哈啊</h2><br/><br/>

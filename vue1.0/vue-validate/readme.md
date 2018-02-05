@@ -30,6 +30,11 @@
 			6. 联动校验，
 				身份证，另外一个格子，必须填写
 
+				select/input/textarea
+
+				left, top , bottom, right;
+				{left: 10px, top: 10px}
+
 			7.点击校验，
 
 				是否必须包含在大盒子里，

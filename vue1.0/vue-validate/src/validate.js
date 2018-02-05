@@ -273,10 +273,27 @@
 
                         _hasClassElemsArr.push(elems[i]);
                         analysisClass(elems[i], 'validate');
+                        // 给元素添加事件 > 校验
+                        addEventForValidFun(elems[i]);
                     };
                 };
                 // 给元素添加事件 > 校验
-                for (var j=0; j<_hasClassElemsArr.length; j++) {
+                function addEventForValidFun(elem) {
+                    switch (elem.tagName) {
+                        case 'INPUT':
+                            addHandler(elem,'blur', function () {
+                                if (checkEveryElem(this, false) && this.tipElem) {
+                                    this.parentNode.removeChild(this.tipElem);
+                                    this.tipElem = null;
+                                    removeClass(this, 'validate-error');
+                                };
+                            });
+                            break;
+                    };
+                };
+
+
+                /*for (var j=0; j<_hasClassElemsArr.length; j++) {
                     var _arrItem = _hasClassElemsArr[j];
                     switch (_arrItem.tagName) {
                         case 'INPUT':
@@ -289,7 +306,7 @@
                             });
                             break;
                     };
-                };
+                };*/
 
                 _self.validateFun = function () {
                     for (var i=0; i<_hasClassElemsArr.length; i++) {
@@ -299,7 +316,6 @@
                     };
                     return true;
                 };
-
 
                 // bln = true ---> scroll
                 // 分别校验 > 每个元素校验规则是否正确
