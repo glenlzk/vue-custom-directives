@@ -36,15 +36,76 @@
 			5.动态生成校验，方式
 
 			6. 联动校验，
+
 				身份证，另外一个格子，必须填写
 
+				class="validate[required,maxSize[11], custom[isNumber]]"
+
+				第一个格子，找到另一个格子，满足多个联动（满足动态）
+				校验规则制定（一对多个校验规则）
+				
+				场景1：
+					第一个：空|required (关联第二个) 
+						-----> 空 && required && 关联第二个
+						-----> 第一个插入_hasClassElemsArr；
+
+					第二个: 空|required (关联第三个)
+						-----> required && 关联第三个
+						-----> 第二个插入_hasClassElemsArr；
+
+					.....
+					第N个：必须要填 | 免填
+
+				场景2：
+					第一个：空 (关联第二个) 
+						-----> 空 && 关联第二个
+						-----> 第一个不插入_hasClassElemsArr；则，后面都不插入_hasClassElemsArr
+				
+				场景3：
+					第一个：空 (关联第二个) 
+						-----> 不为空时 && 关联第二个
+						-----> 第一个不插入_hasClassElemsArr；
+
+					第二个: 空|required (关联第三个)
+						-----> 空 && 关联第三个
+						-----> 后面都不插入_hasClassElemsArr；
+
+						-----> required && 关联第三个
+						-----> 第二个插入_hasClassElemsArr；
+
+					.....
+					第N个：必须要填 | 免填
+
+				--------------------------------------------
+
+				包含普通元素校验规则（value,一般都是特殊值：true/false/0/1/），可以采用特殊属性：
+				<div class="validate[required,maxSize[11], custom[isNumber]]" validateValue="{{true/false}}"></div>
+
+
+				radio/checkbox:
+
+				radio:
+					必须选
+
+				checkbox:
+					至少选一个
+					至少选多个
+				
+
+
+
+			
+			7.常用校验标签：
+				
 				select/input/textarea
+
+			8.错误信息显示位置配置：----------- data-pos(设置气泡显示位置)
 
 				left, top , bottom, right;
 				{left: 10px, top: 10px}
 				如果不设置，默认是top
 
-			7.点击校验，
+			9.点击校验，
 
 				// 先清除，已经插入的errTips提示
 
@@ -74,9 +135,9 @@
 						2.滚动到哪里
 							窗口.scrollTop <= 元素到文档顶部距离
 
-			8. checkBox, radio校验
+			10. checkBox, radio校验
 
-			9. 虚拟表单校验
+			11. 虚拟表单校验
 
 
 			

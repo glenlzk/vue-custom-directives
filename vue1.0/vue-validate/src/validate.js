@@ -382,7 +382,12 @@
                     for (var i=0; i<_hasClassElemsArr.length; i++) {
                         // _elem.reg = {required: true, maxSize: 20};
                         var _elem = _hasClassElemsArr[i];
-                        if (!checkEveryElem(_elem, true)) return false;
+                        if (!checkEveryElem(_elem, true)) {
+                            if (_elem.tagName == 'INPUT' || _elem.tagName == 'TEXTAREA') {
+                                _elem.focus();
+                            };
+                            return false
+                        };
                     };
                     return true;
                 };
