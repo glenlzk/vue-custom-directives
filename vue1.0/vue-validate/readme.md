@@ -177,6 +177,15 @@ custom[isNumber, mobile]
 
 -----------> data-reg-mobile="^[0-9]{11}$" ----------------> data-err-mobile="请入数字号码!"
 
+// -------------------------------------------------- 气泡显示位置：
+
+// obj/left/top/right/bottom
+triangle 代表小三角显示位置
+
+data-promp-pos="{left: '34px', top: '-42px', triangle: 'top'}"
+data-promp-pos="left/top/right/bottom"
+
+
 
 
 
