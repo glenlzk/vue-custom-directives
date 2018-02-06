@@ -59,6 +59,7 @@
 
         <!--<input type="text" class="validate[required, custom[userName_min], maxSize[21]] hide"  id="hideIpt"><br/><br/>-->
     </div><br/><br/>
+    <textarea name="" id="areaId" cols="30" rows="10"></textarea>
     <button onclick="validateForm()">确定</button>
 </div>
 </body>
@@ -100,6 +101,13 @@
 
    function validateForm() {
        $('validateContent').scrollTop = getAncestorLT($('zhengjian'), 'validateContent', $('validateContent')).top;
+   };
+
+   $('areaId').onfocus = function () {
+       console.log('onfocus');
+   };
+   $('areaId').onblur = function () {
+       console.log('onblur');
    };
 
 

@@ -1,4 +1,4 @@
-```
+
 
 插件校验方式：
 	1.校验范围
@@ -34,8 +34,12 @@
 
 				left, top , bottom, right;
 				{left: 10px, top: 10px}
+				如果不设置，默认是left
 
 			7.点击校验，
+
+				// 先清除，已经插入的errTips提示
+
 
 				是否必须包含在大盒子里，
 					优势: 直接获取父盒子(特殊标记: 特殊标签(template)/表单(form)/id)
@@ -96,3 +100,84 @@ var str = 'validate'
 
 
 str.match(reg)
+
+> 使用说明：
+
+```
+<div class="item" v-validate v-el:item>
+	<div class="pos-rel inl-block">
+	   <input type="text" class="validate[required,maxSize[11], custom[isNumber]]"
+	          data-promp-pos="{left: '34px', top: '-42px', triangle: 'top'}"
+	          data-reg-user-name="^1[34578]\d{9}$"
+	          data-reg-is-number="^[0-9]{11}$"
+	          data-err-required="证件号不能为空!"
+	          data-err-max-size="证件号长度不够!"
+	          data-err-user-name="请入正确的证件号码!"
+	          data-err-is-number="请入数字号码!"
+	   >
+	</div>
+</div>
+
+
+// -----------------------------------------------最外围盒子
+// 外盒子: class="item"
+
+高度，overflow,相对定位------(必须)
+
+height: 450px;
+overflow-y: auto;
+position: relative;
+
+// 自定义指令入口----初始化(必须)
+
+v-validate
+
+// 类似元素id v-el:item----(必须)
+
+
+// -----------------------------------------------表单嵌套盒子：用于装错误提示-----（必须）
+<div class="pos-rel inl-block">
+	input/select/textarea
+</div>
+
+.pos-rel {
+    position: relative;
+}
+
+.inl-block {
+    display: inline-block;
+}
+
+input/select/textarea {			// 为了和外盒子大小吻合，不会有间隙
+	display: block;
+}
+
+// -----------------------------------------------表单嵌套盒子：用于装错误提示-----（必须）
+
+<input type="text" class="validate[required,maxSize[11], custom[isNumber]]"
+      data-promp-pos="{left: '34px', top: '-42px', triangle: 'top'}"
+      data-reg-user-name="^1[34578]\d{9}$"
+      data-reg-is-number="^[0-9]{11}$"
+      data-err-required="证件号不能为空!"
+      data-err-max-size="证件号长度不够!"
+      data-err-user-name="请入正确的证件号码!"
+      data-err-is-number="请入数字号码!"
+>
+
+class="validate[required,maxSize[11], custom[isNumber]]"
+
+内部已定义校验：只需填写校验失败，错误提示
+required	-----------> data-err-required="证件号不能为空!"
+maxSize[11] -----------> data-err-max-size="证件号长度不够!"
+
+自定义校验：必须填写校验规则，和 错误提示
+custom[isNumber, mobile]
+
+-----------> data-reg-is-number="^[0-9]{11}$" ----------------> data-err-is-number="请入数字号码!"
+
+-----------> data-reg-mobile="^[0-9]{11}$" ----------------> data-err-mobile="请入数字号码!"
+
+
+
+
+```

@@ -17,6 +17,13 @@
         return false;
     };
 
+    var addClass = function(element, className) {
+        var re = new RegExp("(^|\\s)" + className + "(\\s|$)", "gi");
+        var eleClass = element.className;
+        if (!eleClass.match(re))
+            element.className = eleClass + " " + className;
+    };
+
     var removeClass = function (elem, clasName) {
         var reg = new RegExp('(^|\\s)' + clasName + '($|\\s)', 'i'),
             reg2 = new RegExp('\\s' + clasName + '\\s', 'i');
@@ -74,15 +81,22 @@
             _top = elem.offsetTop,
             par = elem.offsetParent;
 
-        while (par !== ancestorElem) {
-            _left += par.offsetLeft;
-            _top += par.offsetTop;
-            par = par.offsetParent;
-        };
-        return {
-            left : _left,
-            top : _top
-        };
+        try {
+            while (par !== ancestorElem) {
+                _left += par.offsetLeft;
+                _top += par.offsetTop;
+                par = par.offsetParent;
+            };
+            return {
+                left : _left,
+                top : _top
+            };
+
+        } catch (e) {
+            throw new Error('ancestorElem可能未使用定位或overflow-y:auto;');
+        }
+
+
     };
 
     //设置元素style样式
@@ -181,33 +195,26 @@
     // 校验表单
     var checkForValid = function(_elem, pop) {
         var _value = (_elem.value).trim();
-        var _dataObj = _elem.dataset;
 
         // 布尔值
         // 校验，获取提示语
         switch (objType(_elem.reg[pop])) {
             case 'boolean':
                 if (_elem.reg[pop] && _value == '') {
-                    // data-err-required="手机号不能为空!"
-                    // alert(_dataObj['err' + firToUpperCase(pop)]);
-                    // console.log('err' + firToUpperCase(pop));
                     return false;
                 };
                 return true;
             case 'number':
                 if (_value.length < _elem.reg[pop]) {
-                    // alert(_dataObj['err' + firToUpperCase(pop)]);
                     return false;
                 };
                 return true;
             default:
                 var _reg= new RegExp(_elem.reg[pop], "i");
                 if (!_reg.test(_value)) {
-                   // alert(_dataObj['err' + firToUpperCase(pop)]);
                     return false;
                 }
                 return true;
-
         };
     };
 
@@ -220,10 +227,15 @@
 
             _elem.tipElem = document.createElement('div');
             _elem.tipElem.className = "formErrorBox";
-            getErrorTxt(_elem.tipElem);
 
             _elem.parentNode.appendChild(_elem.tipElem);
+            getErrorTxt(_elem.tipElem);
             _elem.className += ' validate-error';
+            // 聚焦
+            if (_elem.tagName == 'INPUT' || _elem.tagName == 'TEXTAREA') {
+                _elem.focus();
+            };
+
         } else {
             getErrorTxt(_elem.tipElem);
         };
@@ -240,9 +252,56 @@
             var reg = new RegExp(/\{name\}/, "i");
             str = str.replace(reg, _dataObj['err' + firToUpperCase(pop)]);
 
-            elem.innerHTML = str;
-        };
 
+            elem.innerHTML = str;
+
+            var pos = _dataObj['prompPos'] || 'top';
+
+            switch (pos) {
+                case 'left':
+                    addClass(elem, 'left');
+                    setCss(elem, {
+                        'left': '-' + (elem.offsetWidth + 9) + 'px',
+                        'margin-top': '-' + (elem.offsetHeight/2) + 'px'
+                    });
+                    break;
+                case 'top':
+                    addClass(elem, 'top');
+                    setCss(elem, {
+                        'top': '-' + (elem.offsetHeight + 9) + 'px',
+                    });
+                    break;
+                case 'right':
+                    addClass(elem, 'right');
+                    setCss(elem, {
+                        'right': '-' + (elem.offsetWidth + 9) + 'px',
+                        'margin-top': '-' + (elem.offsetHeight/2) + 'px'
+                    });
+                    break;
+                case 'bottom':
+                    addClass(elem, 'bottom');
+                    setCss(elem, {
+                        'bottom': '-' + (elem.offsetHeight + 9) + 'px',
+                    });
+                    break;
+                default:
+                    try {
+                        var obj = eval('(' + pos + ')');
+
+                        if (objType(obj) == 'object') {
+                            if (obj.hasOwnProperty('triangle')) {
+                                addClass(elem, obj['triangle']);
+                                delete obj['triangle'];
+                            };
+                            setCss(elem, obj);
+                        };
+                    } catch(e) {};
+                    break;
+            };
+
+            /*console.log('elem.offsetWidth: ', elem.clientWidth, elem);
+            console.log('elem.offsetHeight: ', elem.clientHeight, elem);*/
+        };
     };
 
     // 2.全局变量，通过window.dragBar暴露出去
@@ -279,15 +338,26 @@
                 };
                 // 给元素添加事件 > 校验
                 function addEventForValidFun(elem) {
+
+                    function eventTypeFun(evnt) {
+                        addHandler(elem, evnt, function () {
+                            if (checkEveryElem(this, false) && this.tipElem) {
+                                this.parentNode.removeChild(this.tipElem);
+                                this.tipElem = null;
+                                removeClass(this, 'validate-error');
+                            };
+                        });
+                    };
+
                     switch (elem.tagName) {
                         case 'INPUT':
-                            addHandler(elem,'blur', function () {
-                                if (checkEveryElem(this, false) && this.tipElem) {
-                                    this.parentNode.removeChild(this.tipElem);
-                                    this.tipElem = null;
-                                    removeClass(this, 'validate-error');
-                                };
-                            });
+                            eventTypeFun('blur');
+                            break;
+                        case 'TEXTAREA':
+                            eventTypeFun('blur');
+                            break;
+                        case 'SELECT':
+                            eventTypeFun('change');
                             break;
                     };
                 };
@@ -326,7 +396,10 @@
                             if (checkResult) continue;
                             if (!checkResult) {
                                 errTipsFun(elem, pop);
-                                bln && (_self.scrollTop = getAncestorLT(elem, _self).top);
+                                if (bln) {
+
+                                    _self.scrollTop = getAncestorLT(elem, _self).top - 40 < 0? 0: (getAncestorLT(elem, _self).top - 40);
+                                };
                             };
                             return checkResult;
                         };
