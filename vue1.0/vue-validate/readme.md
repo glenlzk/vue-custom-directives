@@ -1,4 +1,12 @@
 
+> 参阅链接
+
+```
+    https://github.com/glenlzk/vue-custom-directives/tree/master/vue1.0/vue-validate
+
+```
+
+
 
 插件校验方式：
 	1.校验范围
