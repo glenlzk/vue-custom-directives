@@ -189,7 +189,7 @@
                 };
             };
 
-            console.log(element.reg);
+            // console.log(element.reg);
     };
 
     // 校验表单
@@ -397,7 +397,6 @@
                             if (!checkResult) {
                                 errTipsFun(elem, pop);
                                 if (bln) {
-
                                     _self.scrollTop = getAncestorLT(elem, _self).top - 40 < 0? 0: (getAncestorLT(elem, _self).top - 40);
                                 };
                             };

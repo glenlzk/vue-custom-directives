@@ -34,7 +34,7 @@
 
 				left, top , bottom, right;
 				{left: 10px, top: 10px}
-				如果不设置，默认是left
+				如果不设置，默认是top
 
 			7.点击校验，
 
