@@ -336,15 +336,21 @@
                         addEventForValidFun(elems[i]);
                     };
                 };
+                // 清除元素 ---- 错误提示
+                function clearElemErrTips (elem) {
+                    if (elem.tipElem) {
+                        elem.parentNode.removeChild(elem.tipElem);
+                        elem.tipElem = null;
+                        removeClass(elem, 'validate-error');
+                    };
+                };
                 // 给元素添加事件 > 校验
                 function addEventForValidFun(elem) {
 
                     function eventTypeFun(evnt) {
                         addHandler(elem, evnt, function () {
-                            if (checkEveryElem(this, false) && this.tipElem) {
-                                this.parentNode.removeChild(this.tipElem);
-                                this.tipElem = null;
-                                removeClass(this, 'validate-error');
+                            if (checkEveryElem(this, false)) {
+                                clearElemErrTips(this);
                             };
                         });
                     };
@@ -380,7 +386,6 @@
 
                 _self.validateFun = function () {
                     for (var i=0; i<_hasClassElemsArr.length; i++) {
-                        // _elem.reg = {required: true, maxSize: 20};
                         var _elem = _hasClassElemsArr[i];
                         if (!checkEveryElem(_elem, true)) {
                             if (_elem.tagName == 'INPUT' || _elem.tagName == 'TEXTAREA') {
@@ -390,6 +395,13 @@
                         };
                     };
                     return true;
+                };
+
+                _self.clearValidateFun = function () {
+                    for (var i=0; i<_hasClassElemsArr.length; i++) {
+                        var _elem = _hasClassElemsArr[i];
+                        clearElemErrTips(_elem);
+                    };
                 };
 
                 // bln = true ---> scroll
@@ -411,7 +423,7 @@
                     return true;
                 };
 
-                console.log(this);
+                // console.log(this);
 
             },
             // value值发生变化时，会触发执行

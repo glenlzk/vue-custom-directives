@@ -190,6 +190,13 @@ str.match(reg)
 	</div>
 </div>
 
+// -------------------------------------------------- 相关调用API：
+
+// 返回校验结果
+this.$els.item.validateFun();       // 返回true, false
+
+// 清除页面，错误提示
+this.$els.item.clearValidateFun()
 
 // -----------------------------------------------最外围盒子
 // 外盒子: class="item"
@@ -208,7 +215,7 @@ v-validate
 
 
 // -----------------------------------------------表单嵌套盒子：用于装错误提示-----（必须）
-<div class="pos-rel inl-block">
+<div class="pos-rel validate-in-box inl-block">
 	input/select/textarea
 </div>
 
@@ -257,8 +264,5 @@ triangle 代表小三角显示位置
 data-promp-pos="{left: '34px', top: '-42px', triangle: 'top'}"
 data-promp-pos="left/top/right/bottom"
 
-
-
-
-
 ```
+
