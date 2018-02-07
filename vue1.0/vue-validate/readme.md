@@ -266,3 +266,25 @@ data-promp-pos="left/top/right/bottom"
 
 ```
 
+
+
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------ validationEngin.js
+
+/**
+* Required validation
+*
+* @param {jqObject} field
+* @param {Array[String]} rules
+* @param {int} i rules index
+* @param {Map}
+*            user options
+* @param {bool} condRequired flag when method is used for internal purpose in condRequired check
+* @return an error string if validation failed
+*/
+_required:
