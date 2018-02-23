@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+
+.pos-rel {
+    position: relative;
+}
+
+.inl-block {
+    display: inline-block;
+}
+
+.validate-in-box input:focus,
+.validate-in-box textarea:focus{
+    outline: 0;
+}
+
+.validate-in-box input,
+.validate-in-box textarea,
+.validate-in-box select {
+    border: 1px solid #ccc;
+    padding: 0;
+    margin: 0;
+    outline-style: none;
+    display: block;
+}
+
+.validate-in-box input.validate-error,
+.validate-in-box select.validate-error,
+.validate-in-box textarea.validate-error {
+    border-color: #ff674e!important;
+}
+
+/*  ---------------- */
+.validate-in-box .formErrorBox {
+    width: auto;
+    position: absolute;
+    z-index: 9999;
+    white-space: nowrap;
+    opacity: 0;
+}
+
+.validate-in-box .formErrorContent {
+    width: auto;
+    background: #fff;
+    position: relative;
+    color: #ff3f1a;
+    line-height: 18px;
+    font-size: 12px;
+    border: 1px solid #d8d6d7;
+    padding: 5px 8px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+
+}
+.validate-in-box .formErrorArrow em,
+.validate-in-box .formErrorArrow span{
+    font-style: normal;
+    font-size: 30px;
+    position: absolute;
+    color: #d8d6d7;
+}
+.validate-in-box .formErrorArrow span{
+    color: white;
+}
+
+/* --------- bottom -------- */
+
+.validate-in-box .formErrorBox.bottom{
+    left: 0px;
+    bottom: -50px;
+    opacity: 1;
+    transition: bottom ease-out 0.5s, opacity ease-out 0.5s;
+}
+
+.validate-in-box .formErrorBox.bottom .formErrorArrow {
+    position: absolute;
+    top: -31px;
+    left: 10px;
+}
+
+.validate-in-box .formErrorBox.bottom .formErrorArrow em {
+    top: 10px;
+    left: 4px;
+}
+
+.validate-in-box .formErrorBox.bottom .formErrorArrow span {
+    top: 11px;
+    left: 4px;
+}
+/* --------- right -------- */
+
+.validate-in-box .formErrorBox.right {
+    top: 50%;
+    right: -140px;
+    opacity: 1;
+    transition: right ease-out 0.5s, opacity ease-out 0.5s;
+}
+
+.validate-in-box .formErrorBox.right .formErrorArrow {
+    position: absolute;
+    top: -16px;
+    left: -12px;
+}
+
+.validate-in-box .formErrorBox.right .formErrorArrow em {
+    top: 10px;
+    left: 4px;
+}
+
+.validate-in-box .formErrorBox.right .formErrorArrow span {
+    top: 10px;
+    left: 5px;
+}
+
+/* --------- left -------- */
+
+.validate-in-box .formErrorBox.left {
+    top: 50%;
+    left: -150px;
+    opacity: 1;
+    transition: left ease-out 0.5s, opacity ease-out 0.5s;
+}
+
+.validate-in-box .formErrorBox.left .formErrorArrow {
+    position: absolute;
+    top: -16px;
+    right: 14px;
+}
+
+.validate-in-box .formErrorBox.left .formErrorArrow em {
+    top: 10px;
+    left: 4px;
+}
+
+.validate-in-box .formErrorBox.left .formErrorArrow span {
+    top: 10px;
+    left: 3px;
+}
+
+/* --------- top -------- */
+
+.validate-in-box .formErrorBox.top {
+    left: 0px;
+    top: -50px;
+    opacity: 1;
+    transition: top ease-out 0.5s, opacity ease-out 0.5s;
+}
+
+.validate-in-box .formErrorBox.top .formErrorArrow {
+    position: absolute;
+    top: -1px;
+    left: 8px;
+}
+
+.validate-in-box .formErrorBox.top .formErrorArrow em {
+    top: 11px;
+    left: 4px;
+}
+
+.validate-in-box .formErrorBox.top .formErrorArrow span {
+    top: 10px;
+    left: 4px;
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .outbox {
+            margin: 10px auto;
+            width: 1000px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .validate-content {
+            position: relative;
+        }
+        .item {
+            height: 450px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .hide{
+            visibility: hidden;
+        }
+
+    </style>
+    <link rel="stylesheet" href="./src/validate.css">
+</head>
+<body>
+    <div class="outbox" style="margin-top: 100px;">
+       <div class="item" v-validate v-el:item>
+           <div class="validate-content">
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <h2>哈哈哈哈啊</h2><br/>
+               <!--<div class="pos-rel">
+                   &lt;!&ndash;<div class="formErrorBox">
+                       <div class="formErrorContent">
+                           请输入姓名
+                       </div>
+                       <div class="formErrorArrow">
+                           <em>◆</em>
+                           <span>◆</span>
+                       </div>
+                   </div>&ndash;&gt;
+                   电话: <input type="text" class="validate[required]" data-err-required="电话号码不能为空!">
+               </div><br/>-->
+               手机:
+               <div class="pos-rel validate-in-box inl-block">
+               <input type="text" class="validate[required, maxSize[11], mobile]"
+                      data-promp-pos="left"
+                      data-reg-mobile="/[0-9]/"
+                      data-err-required="手机号不能为空!"
+                      data-err-max-size="手机号长度不够!"
+                      data-err-mobile="请输入正确的手机号码!"
+                ></div><br/><br/>
+               证件:
+               <div class="pos-rel  validate-in-box inl-block">
+                <input type="text" class="validate[required,maxSize[11], custom[isNumber]]"
+                    data-reg-user-name="^1[34578]\d{9}$"
+                    data-reg-is-number="^[0-9]{11}$"
+                    data-err-required="证件号不能为空!"
+                    data-err-max-size="证件号长度不够!"
+                    data-err-user-name="请入正确的证件号码!"
+                    data-err-is-number="请入数字号码!"
+                >
+               </div><br/><br/>
+               号码:
+               <div class="pos-rel  validate-in-box inl-block">
+                   <input type="text" class="validate[required,maxSize[11], custom[isNumber]]"
+                          data-promp-pos="bottom"
+                          data-reg-user-name="^1[34578]\d{9}$"
+                          data-reg-is-number="^[0-9]{11}$"
+                          data-err-required="证件号不能为空!"
+                          data-err-max-size="证件号长度不够!"
+                          data-err-user-name="请入正确的证件号码!"
+                          data-err-is-number="请入数字号码!"
+                   >
+               </div><br/><br/>
+               姓名:
+               <div class="pos-rel validate-in-box inl-block">
+                   <input type="text" class="validate[required,maxSize[11], custom[isNumber]]"
+                          data-promp-pos="right"
+                          data-reg-user-name="^1[34578]\d{9}$"
+                          data-reg-is-number="^[0-9]{11}$"
+                          data-err-required="证件号不能为空!"
+                          data-err-max-size="证件号长度不够!"
+                          data-err-user-name="请入正确的证件号码!"
+                          data-err-is-number="请入数字号码!"
+                   >
+               </div><br/><br/>
+               尼玛:
+               <div class="pos-rel validate-in-box inl-block">
+                   <input type="text" class="validate[required,maxSize[11], custom[isNumber]]"
+                          data-promp-pos="{left: '34px', top: '-42px', triangle: 'top'}"
+                          data-reg-user-name="^1[34578]\d{9}$"
+                          data-reg-is-number="^[0-9]{11}$"
+                          data-err-required="证件号不能为空!"
+                          data-err-max-size="证件号长度不够!"
+                          data-err-user-name="请入正确的证件号码!"
+                          data-err-is-number="请入数字号码!"
+                   >
+               </div><br/><br/>
+               <div class="pos-rel validate-in-box inl-block" >
+                   <select  class="validate[required]" data-err-required="请选择房间!">
+                       <option value="">请选择</option>
+                       <option value="1">房型2</option>
+                       <option value="2">房型3</option>
+                       <option value="4">房型4</option>
+                   </select>
+               </div><br/><br/>
+               <div class="pos-rel validate-in-box inl-block" >
+                   <textarea name="" id="" cols="30" rows="10" class="validate[required]"  data-err-required="备注不能为空!"></textarea>
+               </div>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+               <h2>哈哈哈哈啊</h2><br/><br/>
+           </div>
+
+           <!--<input type="text" class="validate[required, custom[userName_min], maxSize[21]] hide"  id="hideIpt"><br/><br/>-->
+       </div><br/><br/>
+        <button @click="validateForm">确定</button>
+    </div>
+</body>
+</html>
+<script src="./src/vue.min.js"></script>
+<script src="./src/validate.js"></script>
+<script type="text/javascript">
+    // this.$els.popup.focus();
+    new Vue({
+        el: 'body',
+        data: {
+        },
+        methods:{
+            validateForm: function () {
+                this.$els.item.validateFun();
+            },
+        }
+    });
+
+
+   /* var getStyle = function (obj, attr) {
+        if (obj.currentStyle) {
+            return obj.currentStyle[attr];
+        } else {
+            return window.getComputedStyle(obj, null)[attr];
+        };
+    };
+
+    var $ = function (id) {
+        return document.getElementById(id);
+    };
+
+    console.log(getStyle($('hideIpt'), 'display'));
+    console.log(getStyle($('hideIpt'), 'visibility'));*/
+
+</script>
