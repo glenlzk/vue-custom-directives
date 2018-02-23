@@ -93,11 +93,7 @@
 				checkbox:
 					至少选一个
 					至少选多个
-				
 
-
-
-			
 			7.常用校验标签：
 				
 				select/input/textarea
